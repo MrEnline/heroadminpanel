@@ -44,16 +44,8 @@ const HeroesList = () => {
         }
 
         return arr.map(({ ...props }) => {
-            return (
-                <HeroesListItem
-                    key={props.id}
-                    id={props.id}
-                    name={props.name}
-                    description={props.description}
-                    element={props.element}
-                    deleteHero={deleteHero}
-                />
-            );
+            const newProps = { deleteHero, ...props };
+            return <HeroesListItem key={newProps.id} {...newProps} />;
         });
     };
 
