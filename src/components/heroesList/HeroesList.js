@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { heroesFetching, heroesFetched, heroesFetchingError } from '../../actions';
 import HeroesListItem from '../heroesListItem/HeroesListItem';
 import Spinner from '../spinner/Spinner';
+import { useCallback } from 'react';
 
 // Задача для этого компонента:
 // При клике на "крестик" идет удаление персонажа из общего состояния
@@ -25,12 +26,15 @@ const HeroesList = () => {
         // eslint-disable-next-line
     }, []);
 
-    const deleteHero = (id) => {
-        dispatch(heroesFetching());
-        request(`http://localhost:3001/heroes/${id}`, 'DELETE')
-            .then((data) => dispatch(heroesFetched(data)))
-            .catch(() => dispatch(heroesFetchingError()));
-    };
+    const deleteHero = useCallback(
+        (id) => {
+            dispatch(heroesFetching());
+            request(`http://localhost:3001/heroes/${id}`, 'DELETE')
+                .then((data) => dispatch(heroesFetched(data)))
+                .catch(() => dispatch(heroesFetchingError()));
+        },
+        [heroes]
+    );
 
     if (heroesLoadingStatus === 'loading') {
         return <Spinner />;
@@ -39,7 +43,7 @@ const HeroesList = () => {
     }
 
     const renderHeroesList = (arr) => {
-        if (arr.length === 0) {
+        if (arr.length === undefined || arr.length === 0) {
             return <h5 className="text-center mt-5">Героев пока нет</h5>;
         }
 
