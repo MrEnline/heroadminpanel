@@ -32,6 +32,9 @@ const HeroesList = () => {
             request(`http://localhost:3001/heroes/${id}`, 'DELETE')
                 .then((data) => dispatch(heroesFetched(data)))
                 .catch(() => dispatch(heroesFetchingError()));
+            request('http://localhost:3001/heroes')
+                .then((data) => dispatch(heroesFetched(data)))
+                .catch(() => dispatch(heroesFetchingError()));
         },
         [heroes]
     );
