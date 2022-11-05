@@ -17,6 +17,36 @@
       "name": "Морской герой",
       "description": "Как аквамен, но не из DC",
       "element": "water"
+    },
+    {
+      "id": 4,
+      "name": "Первый герой",
+      "description": "Первый герой в рейтинге!",
+      "element": "fire"
+    },
+    {
+      "id": 5,
+      "name": "Неизвестный герой",
+      "description": "Скрывающийся в тени",
+      "element": "wind"
+    },
+    {
+      "id": 6,
+      "name": "Морской герой",
+      "description": "Как аквамен, но не из DC",
+      "element": "water"
+    },
+    {
+      "id": "a2cbf610-965e-40fd-aed0-a569fda56645",
+      "name": "test",
+      "description": "test",
+      "element": "fire"
+    },
+    {
+      "id": "9882dad0-f307-4667-b7db-294622713c8a",
+      "name": "MyTetra",
+      "description": "sdfsdf",
+      "element": "wind"
     }
   ],
   "filters": [

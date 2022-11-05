@@ -1,8 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
-import { useRef, useEffect, useState } from 'react';
-import { useHttp } from '../../hooks/http.hook';
-import { useDispatch, useSelector } from 'react-redux';
-import { heroesFetching, heroesFetched, heroesFetchingError } from '../../actions';
+import { v4 as uuidv4 } from "uuid";
+import { useRef, useEffect, useState } from "react";
+import { useHttp } from "../../hooks/http.hook";
+import { useDispatch, useSelector } from "react-redux";
+import { heroesFetching, heroesFetched, heroesFetchingError, heroCreated } from "../../actions";
 
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
@@ -25,7 +25,7 @@ const HeroesAddForm = () => {
 
     useEffect(() => {
         dispatch(heroesFetching());
-        request('http://localhost:3001/filters')
+        request("http://localhost:3001/filters")
             .then((data) => dispatch(heroesFetched({ heroes: null, filters: data })))
             .catch(() => dispatch(heroesFetchingError()));
 
@@ -33,20 +33,17 @@ const HeroesAddForm = () => {
     }, []);
 
     const handleAddElement = () => {
-        const newId = uuidv4();
-        request(
-            `http://localhost:3001/heroes/`,
-            'POST',
-            JSON.stringify({
-                id: newId,
-                name: refName.current.value,
-                description: refDescription.current.value,
-                element: currElement,
-            })
-        ).catch(() => dispatch(heroesFetchingError()));
+        const newHero = {
+            id: uuidv4(),
+            name: refName.current.value,
+            description: refDescription.current.value,
+            element: currElement,
+        };
+        request(`http://localhost:3001/heroes/`, "POST", JSON.stringify(newHero))
+            .then((res) => console.log(res, "Отправка успешна"))
+            .then(dispatch(heroCreated(newHero)))
+            .catch((err) => console.log(err));
     };
-
-    // const elements = useMemo({al}, [filters]);
 
     return (
         <form className="border p-4 shadow-lg rounded">
@@ -54,7 +51,15 @@ const HeroesAddForm = () => {
                 <label htmlFor="name" className="form-label fs-4">
                     Имя нового героя
                 </label>
-                <input ref={refName} required type="text" name="name" className="form-control" id="name" placeholder="Как меня зовут?" />
+                <input
+                    ref={refName}
+                    required
+                    type="text"
+                    name="name"
+                    className="form-control"
+                    id="name"
+                    placeholder="Как меня зовут?"
+                />
             </div>
 
             <div className="mb-3">
@@ -68,7 +73,7 @@ const HeroesAddForm = () => {
                     className="form-control"
                     id="text"
                     placeholder="Что я умею?"
-                    style={{ height: '130px' }}
+                    style={{ height: "130px" }}
                 />
             </div>
 
