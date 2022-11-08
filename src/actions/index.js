@@ -1,32 +1,51 @@
 export const heroesFetching = () => {
     return {
-        type: "HEROES_FETCHING",
+        type: 'HEROES_FETCHING',
     };
 };
 
 export const heroesFetched = (data) => {
     return {
-        type: "HEROES_FETCHED",
+        type: 'HEROES_FETCHED',
         payload: data,
     };
 };
 
 export const heroesFetchingError = () => {
     return {
-        type: "HEROES_FETCHING_ERROR",
+        type: 'HEROES_FETCHING_ERROR',
+    };
+};
+
+export const filtersFetching = () => {
+    return {
+        type: 'FILTERS_FETCHING',
+    };
+};
+
+export const filtersFetched = (data) => {
+    return {
+        type: 'FILTERS_FETCHED',
+        payload: data,
+    };
+};
+
+export const filtersFetchingError = () => {
+    return {
+        type: 'FILTERS_FETCHING_ERROR',
     };
 };
 
 export const heroCreated = (hero) => {
     return {
-        type: "HERO_CREATED",
+        type: 'HERO_CREATED',
         payload: hero,
     };
 };
 
 export const heroDeleted = (id) => {
     return {
-        type: "HERO_DELETED",
+        type: 'HERO_DELETED',
         payload: id,
     };
 };

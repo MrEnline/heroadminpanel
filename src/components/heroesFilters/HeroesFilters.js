@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { filtersFetching, filtersFetchingError, filtersFetched } from '../../actions';
+import { useHttp } from '../../hooks/http.hook';
 
 // Задача для этого компонента:
 // Фильтры должны формироваться на основании загруженных данных
@@ -11,10 +13,18 @@ import { useState } from 'react';
 
 const HeroesFilters = () => {
     const [activeButton, setActiveButton] = useState('Все');
-    const { heroes, heroesLoadingStatus, filters } = useSelector((state) => state);
+    const { filters } = useSelector((state) => state);
     const dispatch = useDispatch();
+    const { request } = useHttp();
 
-    const filtersAllElements = () => {};
+    useEffect(() => {
+        dispatch(filtersFetching());
+        request('http://localhost:3001/filters')
+            .then((data) => dispatch(filtersFetched(data)))
+            .catch(() => dispatch(filtersFetchingError()));
+        console.log('useEffect');
+        // eslint-disable-next-line
+    }, []);
 
     return (
         <div className="card shadow-lg mt-4">
