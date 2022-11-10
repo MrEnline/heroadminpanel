@@ -13,18 +13,15 @@ import { useCallback } from 'react';
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
-    const { heroes, heroesLoadingStatus } = useSelector((state) => state);
+    const { heroesLoadingStatus, filtersHeroes } = useSelector((state) => state);
     const dispatch = useDispatch();
     const { request } = useHttp();
-
-    console.log(`heroesLoadingStatus: ${heroesLoadingStatus}`);
 
     useEffect(() => {
         dispatch(heroesFetching());
         request('http://localhost:3001/heroes')
             .then((data) => dispatch(heroesFetched(data)))
             .catch(() => dispatch(heroesFetchingError()));
-        console.log('useEffect');
         // eslint-disable-next-line
     }, []);
 
@@ -55,7 +52,7 @@ const HeroesList = () => {
         });
     };
 
-    const elements = renderHeroesList(heroes);
+    const elements = renderHeroesList(filtersHeroes);
     return <ul>{elements}</ul>;
 };
 

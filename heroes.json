@@ -28,22 +28,22 @@
     {
       "name": "fire",
       "description": "Огонь",
-      "className": "btn-outline-dark"
+      "className": "btn-danger"
     },
     {
       "name": "water",
       "description": "Вода",
-      "className": "btn-outline-dark"
+      "className": "btn-primary"
     },
     {
       "name": "wind",
       "description": "Ветер",
-      "className": "btn-outline-dark"
+      "className": "btn-success"
     },
     {
       "name": "earth",
       "description": "Земля",
-      "className": "btn-outline-dark"
+      "className": "btn-secondary"
     }
   ]
 }

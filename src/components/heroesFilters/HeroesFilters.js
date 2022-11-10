@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { useState, useEffect } from 'react';
-import { filtersFetching, filtersFetchingError, filtersFetched } from '../../actions';
+import { useEffect } from 'react';
+import { filtersFetching, filtersFetchingError, filtersFetched, activeFilterChanged } from '../../actions';
 import { useHttp } from '../../hooks/http.hook';
 
 // Задача для этого компонента:
@@ -12,8 +12,7 @@ import { useHttp } from '../../hooks/http.hook';
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
 const HeroesFilters = () => {
-    const [activeButton, setActiveButton] = useState('Все');
-    const { filters } = useSelector((state) => state);
+    const { filters, activeFilter } = useSelector((state) => state);
     const dispatch = useDispatch();
     const { request } = useHttp();
 
@@ -26,16 +25,32 @@ const HeroesFilters = () => {
         // eslint-disable-next-line
     }, []);
 
+    const renderButtons = (arr) => {
+        if (arr.length === 0) {
+            return <h5 className="text-center mt-5">Фильтры не найдены</h5>;
+        }
+
+        return arr.map(({ name, description, className }) => {
+            const btnClassName = classNames('btn ', className, { active: name === activeFilter });
+            return (
+                <button className={btnClassName} onClick={() => dispatch(activeFilterChanged(name))}>
+                    {description}
+                </button>
+            );
+        });
+    };
+
     return (
         <div className="card shadow-lg mt-4">
             <div className="card-body">
                 <p className="card-text">Отфильтруйте героев по элементам</p>
                 <div className="btn-group">
-                    <button className={classNames('btn btn-outline-dark', { active: activeButton === 'Все' })}>Все</button>
+                    {renderButtons(filters)}
+                    {/* <button className={classNames('btn btn-outline-dark', { active: activeButton === 'Все' })}>Все</button>
                     <button className={classNames('btn btn-danger', { active: activeButton === 'Огонь' })}>Огонь</button>
                     <button className={classNames('btn btn-primary', { active: activeButton === 'Вода' })}>Вода</button>
                     <button className={classNames('btn btn-success', { active: activeButton === 'Ветер' })}>Ветер</button>
-                    <button className={classNames('btn btn-secondary', { active: activeButton === 'Земля' })}>Земля</button>
+                    <button className={classNames('btn btn-secondary', { active: activeButton === 'Земля' })}>Земля</button> */}
                 </div>
             </div>
         </div>

@@ -55,6 +55,9 @@ const HeroesAddForm = () => {
             .then((res) => console.log(res, 'Отправка успешна'))
             .then(dispatch(heroCreated(newHero)))
             .catch((err) => console.log(err));
+        refName.current.value = '';
+        refDescription.current.value = '';
+        setCurrElement('');
     };
 
     return (
