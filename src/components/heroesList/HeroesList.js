@@ -1,7 +1,7 @@
 import { useHttp } from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { createSelector } from 'reselect';
 import { heroesFetching, heroesFetched, heroesFetchingError, heroDeleted } from '../../actions';
 import HeroesListItem from '../heroesListItem/HeroesListItem';
 import Spinner from '../spinner/Spinner';
@@ -13,17 +13,36 @@ import { useCallback } from 'react';
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
+    //мемоизируем состояния двух редьюсеров с помощью reselect
+    const filteredHeroesSelector = createSelector(
+        (state) => state.filters.activeFilter,
+        (state) => state.heroes.heroes,
+        (filters, heroes) => {
+            if (filters === 'all') {
+                //будет только один рендер, если много раз нажимать на кнопку all
+                console.log('render');
+                return heroes;
+            } else {
+                return heroes.filter((item) => item.element === filters);
+            }
+        }
+    );
+
     //данный способ работы с двумя редъюсерами не приветствуется из-за
     //просадки по оптимизации - происходит перерендер даже если ничего не поменялось на странице
     //решение использовать библиотеку reselect, которая мемоизирует состояние
-    const filtersHeroes = useSelector((state) => {
-        if (state.filters.activeFilter === 'all') {
-            return state.heroes.heroes;
-        } else {
-            return state.heroes.heroes.filter((item) => item.element === state.filters.activeFilter);
-        }
-    });
-    const heroesLoadingStatus = useSelector((state) => state.heroesLoadingStatus);
+    // const filtersHeroes = useSelector((state) => {
+    //     if (state.filters.activeFilter === 'all') {
+    //         //будет постонноя отрабатывать, если нажимать на фильтр all на экране
+    //         console.log('render');
+    //         return state.heroes.heroes;
+    //     } else {
+    //         return state.heroes.heroes.filter((item) => item.element === state.filters.activeFilter);
+    //     }
+    // });
+
+    const filtersHeroes = useSelector(filteredHeroesSelector);
+    const heroesLoadingStatus = useSelector((state) => state.heroes.heroesLoadingStatus);
     const dispatch = useDispatch();
     const { request } = useHttp();
 

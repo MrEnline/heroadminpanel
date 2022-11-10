@@ -1,9 +1,6 @@
 const initialState = {
     heroes: [],
     heroesLoadingStatus: 'idle',
-    filters: [],
-    filtersLoadindStatus: 'idle',
-    activeFilter: 'all',
 };
 
 const heroes = (state = initialState, action) => {
@@ -24,10 +21,17 @@ const heroes = (state = initialState, action) => {
                 ...state,
                 heroesLoadingStatus: 'error',
             };
-        case 'ACTIVE_FILTER_CHANGED':
+        case 'HERO_CREATED':
             return {
                 ...state,
-                activeFilter: action.payload,
+                heroesLoadingStatus: 'idle',
+                heroes: [...state.heroes, action.payload],
+            };
+        case 'HERO_DELETED':
+            return {
+                ...state,
+                heroes: state.heroes.filter((hero) => hero.id !== action.payload),
+                heroesLoadingStatus: 'idle',
             };
         default:
             return state;
