@@ -13,11 +13,14 @@ import { useCallback } from 'react';
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
+    //данный способ работы с двумя редъюсерами не приветствуется из-за
+    //просадки по оптимизации - происходит перерендер даже если ничего не поменялось на странице
+    //решение использовать библиотеку reselect, которая мемоизирует состояние
     const filtersHeroes = useSelector((state) => {
-        if (state.activeFilter === 'all') {
-            return state.heroes;
+        if (state.filters.activeFilter === 'all') {
+            return state.heroes.heroes;
         } else {
-            return state.heroes.filter((item) => item.element === state.activeFilter);
+            return state.heroes.heroes.filter((item) => item.element === state.filters.activeFilter);
         }
     });
     const heroesLoadingStatus = useSelector((state) => state.heroesLoadingStatus);
