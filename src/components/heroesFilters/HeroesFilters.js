@@ -33,7 +33,7 @@ const HeroesFilters = () => {
         return arr.map(({ name, description, className }) => {
             const btnClassName = classNames('btn ', className, { active: name === activeFilter });
             return (
-                <button className={btnClassName} onClick={() => dispatch(activeFilterChanged(name))}>
+                <button key={name} id={name} className={btnClassName} onClick={() => dispatch(activeFilterChanged(name))}>
                     {description}
                 </button>
             );
