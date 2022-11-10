@@ -13,7 +13,14 @@ import { useCallback } from 'react';
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
-    const { heroesLoadingStatus, filtersHeroes } = useSelector((state) => state);
+    const filtersHeroes = useSelector((state) => {
+        if (state.activeFilter === 'all') {
+            return state.heroes;
+        } else {
+            return state.heroes.filter((item) => item.element === state.activeFilter);
+        }
+    });
+    const heroesLoadingStatus = useSelector((state) => state.heroesLoadingStatus);
     const dispatch = useDispatch();
     const { request } = useHttp();
 

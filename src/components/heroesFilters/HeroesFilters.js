@@ -12,7 +12,7 @@ import { useHttp } from '../../hooks/http.hook';
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
 const HeroesFilters = () => {
-    const { filters, activeFilter } = useSelector((state) => state);
+    const { filters, activeFilter } = useSelector((state) => state.filters);
     const dispatch = useDispatch();
     const { request } = useHttp();
 

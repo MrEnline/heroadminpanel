@@ -15,7 +15,7 @@ import { heroCreated } from '../../actions';
 // данных из фильтров
 
 const HeroesAddForm = () => {
-    const { filters, filtersLoadindStatus } = useSelector((state) => state);
+    const { filters, filtersLoadindStatus } = useSelector((state) => state.filters);
     const dispatch = useDispatch();
     const { request } = useHttp();
 
