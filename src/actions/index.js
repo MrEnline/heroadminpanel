@@ -1,3 +1,5 @@
+import { createAction } from '@reduxjs/toolkit';
+
 //Dispatch в качестве параметра подставляется автоматически
 //с помощью библиотеки redux-thunk
 export const fetchHeroes = (request) => (dispatch) => {
@@ -14,24 +16,30 @@ export const fetchFilters = (request) => (dispatch) => {
         .catch(() => dispatch(filtersFetchingError()));
 };
 
-export const heroesFetching = () => {
-    return {
-        type: 'HEROES_FETCHING',
-    };
-};
+// export const heroesFetching = () => {
+//     return {
+//         type: 'HEROES_FETCHING',
+//     };
+// };
 
-export const heroesFetched = (data) => {
-    return {
-        type: 'HEROES_FETCHED',
-        payload: data,
-    };
-};
+export const heroesFetching = createAction('HEROES_FETCHING');
 
-export const heroesFetchingError = () => {
-    return {
-        type: 'HEROES_FETCHING_ERROR',
-    };
-};
+// export const heroesFetched = (data) => {
+//     return {
+//         type: 'HEROES_FETCHED',
+//         payload: data,
+//     };
+// };
+
+export const heroesFetched = createAction('HEROES_FETCHED');
+
+// export const heroesFetchingError = () => {
+//     return {
+//         type: 'HEROES_FETCHING_ERROR',
+//     };
+// };
+
+export const heroesFetchingError = createAction('HEROES_FETCHING_ERROR');
 
 export const filtersFetching = () => {
     return {
