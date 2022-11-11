@@ -1,11 +1,12 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
+import ReduxThunk from 'redux-thunk';
 import heroes from '../reducers/heroes';
 import filters from '../reducers/filters';
 
 //т.к. функция middleware может вызывать следующую похожую функцию
 //то лучше вместо параметра dispatch использовать next, который затем
 //и будет вызывать следующий middleware
-const stringMiddleware = (store) => (next) => (action) => {
+const stringMiddleware = () => (next) => (action) => {
     if (typeof action === 'string') {
         return next({
             type: action,
@@ -14,6 +15,9 @@ const stringMiddleware = (store) => (next) => (action) => {
     return next(action);
 };
 
+//усилитель store
+//трансформирует dispatch, который вместо объекта
+//принимает строку
 const enhancer =
     (createStore) =>
     (...args) => {
@@ -33,7 +37,7 @@ const enhancer =
 
 const store = createStore(
     combineReducers({ heroes, filters }),
-    compose(applyMiddleware(stringMiddleware), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+    compose(applyMiddleware(ReduxThunk, stringMiddleware), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
     // compose(enhancer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 );
 
