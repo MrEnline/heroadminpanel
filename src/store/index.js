@@ -1,12 +1,12 @@
-import { configureStore } from '@reduxjs/toolkit';
-import heroes from '../reducers/heroes';
-import filters from '../reducers/filters';
+import { configureStore } from "@reduxjs/toolkit";
+import heroes from "../components/heroesList/heroesSlice";
+import filters from "../reducers/filters";
 
 //т.к. функция middleware может вызывать следующую похожую функцию
 //то лучше вместо параметра dispatch использовать next, который затем
 //и будет вызывать следующий middleware
 const stringMiddleware = () => (next) => (action) => {
-    if (typeof action === 'string') {
+    if (typeof action === "string") {
         return next({
             type: action,
         });
@@ -24,7 +24,7 @@ const enhancer =
         //store содержит в себе функцию dispatch
         const oldDispatch = store.dispatch;
         store.dispatch = (action) => {
-            if (typeof action === 'string') {
+            if (typeof action === "string") {
                 return oldDispatch({
                     type: action,
                 });
@@ -46,7 +46,7 @@ const store = configureStore({
     reducer: { heroes, filters },
     //middleware: [ReduxThunk, stringMiddleware],
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(stringMiddleware),
-    devTools: process.env.NODE_ENV !== 'production',
+    devTools: process.env.NODE_ENV !== "production",
 });
 
 export default store;
