@@ -1,8 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     heroes: [],
-    heroesLoadingStatus: "idle",
+    heroesLoadingStatus: 'idle',
 };
 
 //в reducers сразу создаются actions в виде ключей(heroesFetching и т.д.)
@@ -11,31 +11,31 @@ const initialState = {
 //выполняет принцип иммутабельности
 //при использовании return данный принцип соблюдаться не будет
 const heroesSlice = createSlice({
-    name: "heroes",
+    name: 'heroes',
     initialState,
     reducers: {
         heroesFetching: (state) => {
-            state.heroesLoadingStatus = "loading";
+            state.heroesLoadingStatus = 'loading';
         },
         heroesFetched: (state, action) => {
             state.heroes = action.payload;
-            state.heroesLoadingStatus = "idle";
+            state.heroesLoadingStatus = 'idle';
         },
         heroesFetchingError: (state) => {
-            state.heroesLoadingStatus = "error";
+            state.heroesLoadingStatus = 'error';
         },
         heroCreated: (state, action) => {
-            state.heroesLoadingStatus = "idle";
+            state.heroesLoadingStatus = 'idle';
             state.heroes.push(action.payload);
         },
         heroDeleted: (state, action) => {
             state.heroes = state.heroes.filter((hero) => hero.id !== action.payload);
-            state.heroesLoadingStatus = "idle";
+            state.heroesLoadingStatus = 'idle';
         },
     },
 });
 
-const { actions, reducers } = heroesSlice;
+const { actions, reducer } = heroesSlice;
 
-export default reducers;
+export default reducer;
 export const { heroesFetching, heroesFetched, heroesFetchingError, heroCreated, heroDeleted } = actions;

@@ -1,12 +1,12 @@
-import { useHttp } from "../../hooks/http.hook";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { createSelector } from "reselect";
-import { fetchHeroes } from "../../actions";
-import { heroDeleted } from "./heroesSlice";
-import HeroesListItem from "../heroesListItem/HeroesListItem";
-import Spinner from "../spinner/Spinner";
-import { useCallback } from "react";
+import { useHttp } from '../../hooks/http.hook';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+import { fetchHeroes } from '../../actions';
+import { heroDeleted } from './heroesSlice';
+import HeroesListItem from '../heroesListItem/HeroesListItem';
+import Spinner from '../spinner/Spinner';
+import { useCallback } from 'react';
 
 // Задача для этого компонента:
 // При клике на "крестик" идет удаление персонажа из общего состояния
@@ -17,17 +17,20 @@ const HeroesList = () => {
     //мемоизируем состояния двух редьюсеров с помощью reselect
     const filteredHeroesSelector = createSelector(
         (state) => state.filters.activeFilter,
-        (state) => state.heroes.heroes,
+        (state) => {
+            console.log(`${state.heroes.heroes}`);
+            return state.heroes.heroes;
+        },
         (filters, heroes) => {
             console.log(`heroes - ${heroes}`);
-            if (filters === "all") {
+            if (filters === 'all') {
                 //будет только один рендер, если много раз нажимать на кнопку all
-                console.log("render");
+                console.log('render');
                 return heroes;
             } else {
                 return heroes.filter((item) => item.element === filters);
             }
-        },
+        }
     );
 
     //данный способ работы с двумя редъюсерами не приветствуется из-за
@@ -54,17 +57,17 @@ const HeroesList = () => {
 
     const onDeleteHero = useCallback(
         (id) => {
-            request(`http://localhost:3001/heroes/${id}`, "DELETE")
-                .then((data) => console.log(data, "Deleted"))
+            request(`http://localhost:3001/heroes/${id}`, 'DELETE')
+                .then((data) => console.log(data, 'Deleted'))
                 .then(dispatch(heroDeleted(id)))
                 .catch((err) => console.log(err));
         },
-        [request],
+        [request]
     );
 
-    if (heroesLoadingStatus === "loading") {
+    if (heroesLoadingStatus === 'loading') {
         return <Spinner />;
-    } else if (heroesLoadingStatus === "error") {
+    } else if (heroesLoadingStatus === 'error') {
         return <h5 className="text-center mt-5">Ошибка загрузки</h5>;
     }
 
