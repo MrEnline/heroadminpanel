@@ -36,7 +36,8 @@ const filtresSlice = createSlice({
             })
             .addCase(fetchFilters.rejected, (state) => {
                 state.filtersLoadindStatus = 'error';
-            });
+            })
+            .addDefaultCase(() => {});
     },
 });
 

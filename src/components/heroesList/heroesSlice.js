@@ -48,7 +48,8 @@ const heroesSlice = createSlice({
             })
             .addCase(fetchHeroes.rejected, (state) => {
                 state.heroesLoadingStatus = 'error';
-            });
+            })
+            .addDefaultCase(() => {});
     },
 });
 
