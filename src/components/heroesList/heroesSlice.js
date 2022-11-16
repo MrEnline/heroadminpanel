@@ -1,10 +1,17 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { useHttp } from '../../hooks/http.hook';
 
-const initialState = {
-    heroes: [],
+const heroesAdapter = createEntityAdapter();
+
+// const initialState = {
+//     heroes: [],
+//     heroesLoadingStatus: 'idle',
+// };
+
+//получим начальные значения из адаптера
+const initialState = heroesAdapter.getInitialState({
     heroesLoadingStatus: 'idle',
-};
+});
 
 //данная функция возвращает promise и выполняется асинхронно
 //она создает новый actionCreater
@@ -26,12 +33,10 @@ const heroesSlice = createSlice({
     initialState,
     reducers: {
         heroCreated: (state, action) => {
-            state.heroesLoadingStatus = 'idle';
-            state.heroes.push(action.payload);
+            heroesAdapter.addOne(state, action.payload);
         },
         heroDeleted: (state, action) => {
-            state.heroes = state.heroes.filter((hero) => hero.id !== action.payload);
-            state.heroesLoadingStatus = 'idle';
+            heroesAdapter.removeOne(state, action.payload);
         },
     },
     //pending - загрузка данных
@@ -43,7 +48,8 @@ const heroesSlice = createSlice({
                 state.heroesLoadingStatus = 'loading';
             })
             .addCase(fetchHeroes.fulfilled, (state, action) => {
-                state.heroes = action.payload;
+                //state.heroes = action.payload;
+                heroesAdapter.setAll(state, action.payload);
                 state.heroesLoadingStatus = 'idle';
             })
             .addCase(fetchHeroes.rejected, (state) => {
@@ -52,6 +58,8 @@ const heroesSlice = createSlice({
             .addDefaultCase(() => {});
     },
 });
+
+export const { selectAll } = heroesAdapter.getSelectors((state) => state.heroes);
 
 const { actions, reducer } = heroesSlice;
 
