@@ -1,7 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux';
-import classNames from 'classnames';
-import { useEffect } from 'react';
-import { fetchFilters, activeFilterChanged, selectEntities } from './filtersSlice';
+import { useDispatch, useSelector } from "react-redux";
+import classNames from "classnames";
+import { useEffect } from "react";
+import { fetchFilters, activeFilterChanged, selectAll } from "./filtersSlice";
+import Spinner from "../spinner/Spinner";
+import store from "../../store";
 
 // Задача для этого компонента:
 // Фильтры должны формироваться на основании загруженных данных
@@ -12,8 +14,8 @@ import { fetchFilters, activeFilterChanged, selectEntities } from './filtersSlic
 
 const HeroesFilters = () => {
     //const { filters, activeFilter } = useSelector((state) => state.filters);
-    const { filters } = selectEntities;
-    const activeFilter = 'all';
+    const { activeFilter, filtersLoadingStatus } = useSelector((state) => state.filters);
+    const filters = selectAll(store.getState());
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -21,15 +23,26 @@ const HeroesFilters = () => {
         // eslint-disable-next-line
     }, []);
 
+    if (filtersLoadingStatus === "loading") {
+        return <Spinner />;
+    } else if (filtersLoadingStatus === "error") {
+        return <h5 className="text-center mt-5">Ошибка загрузки</h5>;
+    }
+
     const renderButtons = (arr) => {
         if (arr.length === 0) {
             return <h5 className="text-center mt-5">Фильтры не найдены</h5>;
         }
 
         return arr.map(({ name, description, className }) => {
-            const btnClassName = classNames('btn ', className, { active: name === activeFilter });
+            const btnClassName = classNames("btn ", className, { active: name === activeFilter });
             return (
-                <button key={name} id={name} className={btnClassName} onClick={() => dispatch(activeFilterChanged(name))}>
+                <button
+                    key={name}
+                    id={name}
+                    className={btnClassName}
+                    onClick={() => dispatch(activeFilterChanged(name))}
+                >
                     {description}
                 </button>
             );
