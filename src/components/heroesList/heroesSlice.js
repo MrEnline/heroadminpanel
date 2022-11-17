@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createEntityAdapter, createSelector } from '@reduxjs/toolkit';
 import { useHttp } from '../../hooks/http.hook';
 
 const heroesAdapter = createEntityAdapter();
@@ -59,7 +59,22 @@ const heroesSlice = createSlice({
     },
 });
 
-export const { selectAll } = heroesAdapter.getSelectors((state) => state.heroes);
+const { selectAll } = heroesAdapter.getSelectors((state) => state.heroes);
+
+//мемоизируем состояния двух редьюсеров с помощью reselect
+export const filteredHeroesSelector = createSelector(
+    (state) => state.filters.activeFilter,
+    //(state) => state.heroes.heroes,
+    selectAll,
+    (filters, heroes) => {
+        if (filters === 'all') {
+            //будет только один рендер, если много раз нажимать на кнопку all
+            return heroes;
+        } else {
+            return heroes.filter((item) => item.element === filters);
+        }
+    }
+);
 
 const { actions, reducer } = heroesSlice;
 

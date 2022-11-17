@@ -49,4 +49,6 @@ const store = configureStore({
     devTools: process.env.NODE_ENV !== 'production',
 });
 
+console.log(`store - ${store.getState().heroes}`);
+
 export default store;

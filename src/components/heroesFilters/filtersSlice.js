@@ -1,11 +1,18 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { useHttp } from '../../hooks/http.hook';
 
-const initialState = {
-    filters: [],
+const filtersAdapter = createEntityAdapter();
+
+// const initialState = {
+//     filters: [],
+//     filtersLoadindStatus: 'idle',
+//     activeFilter: 'all',
+// };
+
+const initialState = filtersAdapter.getInitialState({
     filtersLoadindStatus: 'idle',
     activeFilter: 'all',
-};
+});
 
 export const fetchFilters = createAsyncThunk('filters/fetchFilters', async () => {
     const { request } = useHttp();
@@ -18,7 +25,7 @@ export const fetchFilters = createAsyncThunk('filters/fetchFilters', async () =>
 //выполняет принцип иммутабельности
 //при использовании return данный принцип соблюдаться не будет
 const filtresSlice = createSlice({
-    name: 'heroes',
+    name: 'filters',
     initialState,
     reducers: {
         activeFilterChanged: (state, action) => {
@@ -31,7 +38,8 @@ const filtresSlice = createSlice({
                 state.filtersLoadindStatus = 'loading';
             })
             .addCase(fetchFilters.fulfilled, (state, action) => {
-                state.filters = action.payload;
+                //state.filters = action.payload;
+                filtersAdapter.setAll(state, action.payload);
                 state.filtersLoadindStatus = 'idle';
             })
             .addCase(fetchFilters.rejected, (state) => {
@@ -40,6 +48,8 @@ const filtresSlice = createSlice({
             .addDefaultCase(() => {});
     },
 });
+
+export const { selectEntities } = filtersAdapter.getSelectors((state) => state.filters);
 
 const { actions, reducer } = filtresSlice;
 

@@ -2,8 +2,8 @@ import { useHttp } from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 //import { createSelector } from 'reselect';
-import { createSelector } from '@reduxjs/toolkit';
-import { fetchHeroes, heroDeleted, selectAll } from './heroesSlice';
+//import { createSelector } from '@reduxjs/toolkit';
+import { fetchHeroes, heroDeleted, filteredHeroesSelector } from './heroesSlice';
 import HeroesListItem from '../heroesListItem/HeroesListItem';
 import Spinner from '../spinner/Spinner';
 import { useCallback } from 'react';
@@ -14,22 +14,6 @@ import { useCallback } from 'react';
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
-    //мемоизируем состояния двух редьюсеров с помощью reselect
-    const filteredHeroesSelector = createSelector(
-        (state) => state.filters.activeFilter,
-        //(state) => state.heroes.heroes,
-        selectAll,
-        (filters, heroes) => {
-            console.log(`heroes - ${heroes}`);
-            if (filters === 'all') {
-                //будет только один рендер, если много раз нажимать на кнопку all
-                return heroes;
-            } else {
-                return heroes.filter((item) => item.element === filters);
-            }
-        }
-    );
-
     //данный способ работы с двумя редъюсерами не приветствуется из-за
     //просадки по оптимизации - происходит перерендер даже если ничего не поменялось на странице
     //решение использовать библиотеку reselect, которая мемоизирует состояние
