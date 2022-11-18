@@ -49,7 +49,13 @@ const filtersSlice = createSlice({
     },
 });
 
+//т.к. мы указали функцию внутри getSelectors, то благодаря ей
+//мы получим только сущность(entity) filters через селектор selectAll
 export const { selectAll } = filtersAdapter.getSelectors((state) => state.filters);
+
+//так нельзя делать и не будет работать, потому что store создается на основе reducer
+//а значит после того как будет создан reducer
+//const getFilters = selectAll(store.getState())
 
 const { actions, reducer } = filtersSlice;
 

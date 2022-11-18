@@ -15,6 +15,7 @@ import store from "../../store";
 const HeroesFilters = () => {
     //const { filters, activeFilter } = useSelector((state) => state.filters);
     const { activeFilter, filtersLoadingStatus } = useSelector((state) => state.filters);
+    //т.к. selectAll принимает аргумент state, то его надо получить из store
     const filters = selectAll(store.getState());
     const dispatch = useDispatch();
 
