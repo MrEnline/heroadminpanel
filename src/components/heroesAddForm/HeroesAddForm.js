@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { heroCreated } from "../heroesList/heroesSlice";
 import { selectAll } from "../heroesFilters/filtersSlice";
 import store from "../../store";
+import { useCreateHeroMutation } from "../../api/apiSlice";
 
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
@@ -26,7 +27,8 @@ const HeroesAddForm = () => {
     const refDescription = useRef(null);
     const [currElement, setCurrElement] = useState(null);
 
-    console.log("HeroesAddForm");
+    //получим из хука мутации данных функцию и статус выполнения мутации
+    const [createHero, { isLoading }] = useCreateHeroMutation();
 
     const renderFiltersElements = (filters, status) => {
         if (status === "loading") {
@@ -54,10 +56,18 @@ const HeroesAddForm = () => {
             description: refDescription.current.value,
             element: currElement,
         };
-        request(`http://localhost:3001/heroes/`, "POST", JSON.stringify(newHero))
-            .then((res) => console.log(res, "Отправка успешна"))
-            .then(dispatch(heroCreated(newHero)))
-            .catch((err) => console.log(err));
+
+        // request(`http://localhost:3001/heroes/`, "POST", JSON.stringify(newHero))
+        //     .then((res) => console.log(res, "Отправка успешна"))
+        //     .then(dispatch(heroCreated(newHero)))
+        //     .catch((err) => console.log(err));
+
+        //выполним функцию мутации на сервере
+        //после чего за счет добавленных тэгов будет выполнен запрос на сервер
+        //для получения актуальных данных и отображения на UI
+        //unWrap - функцию для
+        createHero(newHero).unwrap();
+
         refName.current.value = "";
         refDescription.current.value = "";
         setCurrElement("");

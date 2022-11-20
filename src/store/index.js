@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import heroes from "../components/heroesList/heroesSlice";
 import filters from "../components/heroesFilters/filtersSlice";
+import { apiSlice } from "../api/apiSlice";
 
 //т.к. функция middleware может вызывать следующую похожую функцию
 //то лучше вместо параметра dispatch использовать next, который затем
@@ -43,9 +44,9 @@ const enhancer =
 //ReduxThunk по умолчанию включен в middlewate ReduxToolkit, поэтому
 //данный middleware можно не указывать
 const store = configureStore({
-    reducer: { heroes, filters },
+    reducer: { heroes, filters, [apiSlice.reducerPath]: apiSlice.reducer },
     //middleware: [ReduxThunk, stringMiddleware],
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(stringMiddleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(stringMiddleware, apiSlice.middleware),
     devTools: process.env.NODE_ENV !== "production",
 });
 
