@@ -1,13 +1,13 @@
-import { useHttp } from "../../hooks/http.hook";
-import { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+//import { useHttp } from "../../hooks/http.hook";
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 //import { createSelector } from 'reselect';
 //import { createSelector } from '@reduxjs/toolkit';
-import { fetchHeroes, heroDeleted, filteredHeroesSelector } from "./heroesSlice";
-import HeroesListItem from "../heroesListItem/HeroesListItem";
-import Spinner from "../spinner/Spinner";
-import { useCallback } from "react";
-import { useGetHeroesQuery, useDeleteHeroMutation } from "../../api/apiSlice";
+//import { fetchHeroes, heroDeleted, filteredHeroesSelector } from "./heroesSlice";
+import HeroesListItem from '../heroesListItem/HeroesListItem';
+import Spinner from '../spinner/Spinner';
+import { useCallback } from 'react';
+import { useGetHeroesQuery, useDeleteHeroMutation } from '../../api/apiSlice';
 
 // Задача для этого компонента:
 // При клике на "крестик" идет удаление персонажа из общего состояния
@@ -42,7 +42,7 @@ const HeroesList = () => {
         //через slice делать копию советует официальная документация react
         const filteredHeroes = heroes.slice();
 
-        if (activeFilter === "all") {
+        if (activeFilter === 'all') {
             //будет только один рендер, если много раз нажимать на кнопку all
             return filteredHeroes;
         } else {

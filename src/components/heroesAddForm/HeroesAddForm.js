@@ -1,11 +1,11 @@
-import { v4 as uuidv4 } from "uuid";
-import { useRef, useState } from "react";
-import { useHttp } from "../../hooks/http.hook";
-import { useDispatch, useSelector } from "react-redux";
-import { heroCreated } from "../heroesList/heroesSlice";
-import { selectAll } from "../heroesFilters/filtersSlice";
-import store from "../../store";
-import { useCreateHeroMutation } from "../../api/apiSlice";
+import { v4 as uuidv4 } from 'uuid';
+import { useRef, useState } from 'react';
+import { useHttp } from '../../hooks/http.hook';
+import { useDispatch, useSelector } from 'react-redux';
+//import { heroCreated } from "../heroesList/heroesSlice";
+import { selectAll } from '../heroesFilters/filtersSlice';
+import store from '../../store';
+import { useCreateHeroMutation } from '../../api/apiSlice';
 
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
@@ -20,25 +20,23 @@ import { useCreateHeroMutation } from "../../api/apiSlice";
 const HeroesAddForm = () => {
     const { filtersLoadindStatus } = useSelector((state) => state.filters);
     const filters = selectAll(store.getState());
-    const dispatch = useDispatch();
-    const { request } = useHttp();
 
     const refName = useRef(null);
     const refDescription = useRef(null);
     const [currElement, setCurrElement] = useState(null);
 
     //получим из хука мутации данных функцию и статус выполнения мутации
-    const [createHero, { isLoading }] = useCreateHeroMutation();
+    const [createHero] = useCreateHeroMutation();
 
     const renderFiltersElements = (filters, status) => {
-        if (status === "loading") {
+        if (status === 'loading') {
             return <option>Загрузка элементов</option>;
-        } else if (status === "error") {
+        } else if (status === 'error') {
             return <option>Ошибка загрузки</option>;
         }
         if (filters && filters.length > 0) {
             return filters.map(({ name, description }) => {
-                if (name === "all") return;
+                if (name === 'all') return;
                 return (
                     <option key={name} value={name}>
                         {description}
@@ -68,9 +66,9 @@ const HeroesAddForm = () => {
         //unWrap - функцию для
         createHero(newHero).unwrap();
 
-        refName.current.value = "";
-        refDescription.current.value = "";
-        setCurrElement("");
+        refName.current.value = '';
+        refDescription.current.value = '';
+        setCurrElement('');
     };
 
     return (
@@ -79,15 +77,7 @@ const HeroesAddForm = () => {
                 <label htmlFor="name" className="form-label fs-4">
                     Имя нового героя
                 </label>
-                <input
-                    ref={refName}
-                    required
-                    type="text"
-                    name="name"
-                    className="form-control"
-                    id="name"
-                    placeholder="Как меня зовут?"
-                />
+                <input ref={refName} required type="text" name="name" className="form-control" id="name" placeholder="Как меня зовут?" />
             </div>
 
             <div className="mb-3">
@@ -101,7 +91,7 @@ const HeroesAddForm = () => {
                     className="form-control"
                     id="text"
                     placeholder="Что я умею?"
-                    style={{ height: "130px" }}
+                    style={{ height: '130px' }}
                 />
             </div>
 
