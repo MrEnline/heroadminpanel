@@ -6,13 +6,15 @@ const initialState = {
     activeFilter: 'all',
 };
 
-//в reducers сразу создаются actions в виде ключей(heroesFetching и т.д.)
-//в качестве значений для ключей создаются действия
+//благодаря методу createSlice автоматически создаются ключи - actions и
+//reducers - чистые функции, которые выполняются в ответ на actions
+//в reducers сразу создаются actions в виде ключей(filtersFetching и т.д.)
+//в качестве значений для ключей создаются редьюсеры, т.е. чистые функции, которые выполняюся в ответ на действия
 //здесь также работает библиотека immer.js, которая
 //выполняет принцип иммутабельности
 //при использовании return данный принцип соблюдаться не будет
-const heroesSlice = createSlice({
-    name: 'heroes',
+const filtersSlice = createSlice({
+    name: 'filters',
     initialState,
     reducers: {
         filtersFetching: (state) => {
@@ -31,7 +33,7 @@ const heroesSlice = createSlice({
     },
 });
 
-const { actions, reducer } = heroesSlice;
+const { actions, reducer } = filtersSlice;
 
 export default reducer;
 export const { filtersFetching, filtersFetched, filtersFetchingError, activeFilterChanged } = actions;
